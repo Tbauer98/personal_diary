@@ -1,9 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
-  const [entries, setEntries] = useState([]);
+
+  const [entries, setEntries] = useState(() => {
+    const saved = localStorage.getItem('personal_diary_entries');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('personal_diary_entries', JSON.stringify(entries));
+  }, [entries]);
 
   const handleAddEntry = (e) => {
     e.preventDefault();
